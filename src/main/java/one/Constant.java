@@ -12,6 +12,7 @@ public class Constant {
         YQM_LIST.add("6RY50");
         YQM_LIST.add("6RY49");
         YQM_LIST.add("X2L30");
+        YQM_LIST.add("X2L31");
 
 //        YQM_LIST.add("A1123");
         YQM_LIST.add("A1134");
