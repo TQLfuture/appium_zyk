@@ -268,7 +268,13 @@ public class ZykService {
                 LISE_EDIT = listEdit;
                 phoneNoCount = 0;
                 //进行验证码点击
-                List<WebElement> list = driver.findElementsByClassName("android.widget.TextView");
+                List<WebElement> list = new AndroidDriverWait(driver,10).until(new ExpectedCondition<List<WebElement>>() {
+                    @Override
+                    public List<WebElement> apply(AndroidDriver androidDriver) {
+                        return androidDriver.findElements(By.className("android.widget.TextView"));
+
+                    }
+                });
                 if (list != null && list.size() > (4 + 1)) {
                     logger.info(processEdsc+"当前正触发获取验证码=====");
                     Map tap = new HashMap();
@@ -312,7 +318,17 @@ public class ZykService {
                         break;
                     }
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(2000);
+                        logger.info(processEdsc+" 在获取验证码进行点击");
+                        //随便点击
+                        Map tap = new HashMap();
+                        tap.put("tapCount", new Double(2));
+                        tap.put("touchCount", new Double(1));
+                        tap.put("duration", new Double(0.5));
+                        tap.put("x", new Double(380));
+                        tap.put("y", new Double(115));
+                        driver.executeScript("mobile: tap", tap);
+                        Thread.sleep(3000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -422,7 +438,14 @@ public class ZykService {
         String processEdsc = "【退出系统或者进行登录】-> ";
         //进行登录
         if (step == 5) {
-            List<WebElement> list = driver.findElementsByClassName("android.widget.TextView");
+            //进行验证码点击
+            List<WebElement> list = new AndroidDriverWait(driver,10).until(new ExpectedCondition<List<WebElement>>() {
+                @Override
+                public List<WebElement> apply(AndroidDriver androidDriver) {
+                    return androidDriver.findElements(By.className("android.widget.TextView"));
+
+                }
+            });
             for (WebElement webElement : list) {
                 try {
                     String text = webElement.getText();
@@ -445,7 +468,14 @@ public class ZykService {
 
         // 进行系统退出 退出界面
         if (step == 99) {
-            List<WebElement> list = driver.findElementsByClassName("android.widget.TextView");
+            //进行验证码点击
+            List<WebElement> list = new AndroidDriverWait(driver,10).until(new ExpectedCondition<List<WebElement>>() {
+                @Override
+                public List<WebElement> apply(AndroidDriver androidDriver) {
+                    return androidDriver.findElements(By.className("android.widget.TextView"));
+
+                }
+            });
             if (list != null && list.size() >= (11+1)) {
                 WebElement wLogOut = list.get(11);
                 logger.info(processEdsc+"现在需要退出重新登录注册===") ;
