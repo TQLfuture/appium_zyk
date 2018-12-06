@@ -24,4 +24,7 @@ public class MainBlack {
         }
     }
 
+    public static void main(String[] args) {
+        new MainBlack().execZyk();
+    }
 }
