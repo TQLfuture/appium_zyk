@@ -207,6 +207,20 @@ public class ZykService {
                     @Override
                     public List<WebElement> apply(AndroidDriver androidDriver) {
                         logger.info(processEdsc+" 进入到获取输入框 ");
+                        //随便点击
+                        Map tap = new HashMap();
+                        tap.put("tapCount", new Double(2));
+                        tap.put("touchCount", new Double(1));
+                        tap.put("duration", new Double(0.5));
+                        tap.put("x", new Double(380));
+                        tap.put("y", new Double(115));
+                        driver.executeScript("mobile: tap", tap);
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        logger.info(processEdsc+" 进入到获取输入框点击完成之后 ");
                         return androidDriver.findElements(By.className("android.widget.EditText"));
                     }
                 });
