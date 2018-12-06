@@ -257,7 +257,17 @@ public class ZykService {
                         }
                         break;
                     }
-                    Thread.sleep(5000);
+                    logger.info(processEdsc+" 在获取号码的流程中进行点击");
+                    Thread.sleep(2000);
+                    //随便点击
+                    Map tap = new HashMap();
+                    tap.put("tapCount", new Double(2));
+                    tap.put("touchCount", new Double(1));
+                    tap.put("duration", new Double(0.5));
+                    tap.put("x", new Double(380));
+                    tap.put("y", new Double(115));
+                    driver.executeScript("mobile: tap", tap);
+                    Thread.sleep(3000);
                 }
             }
             if (editSize == 2) {
