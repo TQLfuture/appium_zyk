@@ -25,4 +25,8 @@ public class MainLianX {
         }
     }
 
+    public static void main(String[] args) {
+        new MainLianX().execZyk();
+    }
+
 }

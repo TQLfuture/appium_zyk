@@ -24,6 +24,10 @@ public class MainWhite {
         }
     }
 
+    public static void main(String[] args) {
+        new MainWhite().execZyk();
+    }
+
     public String execTest(String a){
         System.out.printf("aa " + a);
         return a+"test";
