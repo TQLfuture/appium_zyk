@@ -6,9 +6,11 @@ import io.appium.java_client.touch.offset.PointOption;
 import one.GetPhone;
 import one.GetSms;
 import one.YmManager;
+import one.exec.MainBlack;
 import one.pojo.YmPhone;
 import one.source.AndroidDriverWait;
 import one.source.ExpectedCondition;
+import one.source.Swipe;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.CapabilityType;
@@ -24,6 +26,7 @@ import java.util.regex.Pattern;
 import static one.Constant.YQM_LIST;
 
 public class ZykService {
+    public int num = 0;
 
     public static Logger logger = Logger.getLogger("MainTest");
 
@@ -87,6 +90,7 @@ public class ZykService {
             logger.info("--进行销毁session-----------");
             driver.quit();
         }
+
     }
 
     /**
@@ -103,7 +107,7 @@ public class ZykService {
     /**
      * 点击我的或者
      */
-    private void clickWodeOrSkip() {
+    private void clickWodeOrSkip() throws InterruptedException {
         String processEdsc = "【进入点击我的或者跳过的流程】-> ";
         if (step < 2) {
             List<WebElement> list = driver.findElementsByClassName("android.widget.TextView");
@@ -129,8 +133,43 @@ public class ZykService {
                         webElement.click();
                         break;
                     }
+
+                    if ("立即体验".equals(text)) {
+                        webElement.click();
+                        step = 0;
+                    }
+
+                    if (text != null && text.contains("权限")) {
+                        for (int b=0;b<=2;b++) {
+                            Map tap3 = new HashMap();
+                            tap3.put("tapCount", new Double(2));
+                            tap3.put("touchCount", new Double(1));
+                            tap3.put("duration", new Double(0.5));
+                            tap3.put("x", new Double(602));
+                            tap3.put("y", new Double(1219));
+                            driver.executeScript("mobile: tap", tap3);
+                            Thread.sleep(1000);
+                        }
+                    }
+
+                    if (text != null && text.contains("照片、媒体内")) {
+                        step = 0;
+                    }
                 } catch (Exception e) {
                     logger.info(processEdsc+"在点击我的或者跳过的步骤 = " + e.toString());
+                    //滑动
+                    for (int a = 0;a<=2;a++) {
+                        Swipe.SwipeLeft(driver);
+                        Thread.sleep(1000);
+                    }
+                    logger.info("点击我的体验");
+                    Map tap3 = new HashMap();
+                    tap3.put("tapCount", new Double(2));
+                    tap3.put("touchCount", new Double(1));
+                    tap3.put("duration", new Double(0.5));
+                    tap3.put("x", new Double(420));
+                    tap3.put("y", new Double(1176));
+                    driver.executeScript("mobile: tap", tap3);
                 }
             }
         }
@@ -384,7 +423,7 @@ public class ZykService {
         String processEdsc = "【输入验证码流程】-> ";
         //进行验证码输入
         if (step == 4) {
-            outYqm = YQM_LIST.get(new Random().nextInt(YQM_LIST.size() - 1));
+            outYqm = YQM_LIST.get(new Random().nextInt(YQM_LIST.size()));
             //全部输入完成进行登录按钮
             //获取验证码
             if (yzmOut == null) {
@@ -495,8 +534,13 @@ public class ZykService {
                             logger.info(processEdsc+"在登录时隐藏键盘 = "+e.getMessage());
                         }
                         webElement.click();
-                        step = 2;
-                        break;
+                        //step = 2;
+                        step = 0;
+                        MainBlack.FLAG = true;
+                        this.excuteAdbShell("adb shell pm clear com.guya.yddrug");
+                        driver.quit();
+                        return;
+                        //break;
                     }
                 } catch (Exception e) {
                     System.out.printf(e.toString());
@@ -546,5 +590,15 @@ public class ZykService {
             this.clickLoginOrLogout();
         }
 
+    }
+
+
+    private void excuteAdbShell(String s) {
+        Runtime runtime=Runtime.getRuntime();
+        try{
+            runtime.exec(s);
+        }catch(Exception e){
+            logger.info("执行命令:"+s+"出错");
+        }
     }
 }

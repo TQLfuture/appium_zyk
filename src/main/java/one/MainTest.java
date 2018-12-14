@@ -690,6 +690,15 @@ public class MainTest {
 //        }
 //
 
+
+    }
+
+    @Test
+    public void test5() throws InterruptedException {
+        while (true) {
+            System.out.printf(new Random().nextInt(2)+"");
+            Thread.sleep(1000);
+        }
     }
 
 }

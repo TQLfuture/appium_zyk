@@ -6,6 +6,8 @@ import java.net.MalformedURLException;
 
 public class MainBlack {
 
+    public static boolean FLAG = true;
+
     public void execZyk(){
         String url = "http://localhost:4725/wd/hub";
         String deviceName = "b4e496df7d93";
@@ -25,6 +27,18 @@ public class MainBlack {
     }
 
     public static void main(String[] args) {
-        new MainBlack().execZyk();
+        while (true) {
+            if (FLAG) {
+                FLAG = false;
+                new MainBlack().execZyk();
+            }
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+
     }
 }
