@@ -14,7 +14,7 @@ public class Constant {
 //        YQM_LIST.add("X2L30"); 被封
 //        YQM_LIST.add("X2L31");
 //        YQM_LIST.add("X2L33");//李宁
-        YQM_LIST.add("X2L34");//小曹
+        //YQM_LIST.add("X2L34");//小曹
 
 //        YQM_LIST.add("A1123");
 //        YQM_LIST.add("A1134");
@@ -36,6 +36,8 @@ public class Constant {
         YQM_LIST.add("KI6M6J");
         YQM_LIST.add("F5NN4C");
         YQM_LIST.add("01N69N");
+        YQM_LIST.add("57ESIO");
+
 
         /**
          *

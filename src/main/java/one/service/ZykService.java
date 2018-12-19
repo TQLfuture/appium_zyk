@@ -35,6 +35,7 @@ public class ZykService {
     private String deviceName;
 
     private static int step = 0;
+    private boolean firstInBool = true;
 
     String phoneOut = null;
     public static String yzmOut = null;
@@ -104,13 +105,47 @@ public class ZykService {
         return pattern.matcher(str).matches();
     }
 
+    private void cliclPermit() throws InterruptedException {
+        for (int b=0;b<=2;b++) {
+            Map tap3 = new HashMap();
+            tap3.put("tapCount", new Double(2));
+            tap3.put("touchCount", new Double(1));
+            tap3.put("duration", new Double(0.5));
+            tap3.put("x", new Double(602));
+            tap3.put("y", new Double(1219));
+            driver.executeScript("mobile: tap", tap3);
+            Thread.sleep(1000);
+        }
+    }
+
+    private void moveScreen() throws InterruptedException {
+        //滑动
+        for (int a = 0;a<=2;a++) {
+            Swipe.SwipeLeft(driver);
+            Thread.sleep(1000);
+        }
+    }
     /**
      * 点击我的或者
      */
     private void clickWodeOrSkip() throws InterruptedException {
         String processEdsc = "【进入点击我的或者跳过的流程】-> ";
         if (step < 2) {
+
+            //在打开界面是就要进行点击允许
+            if (firstInBool) {
+                Thread.sleep(1000);
+                firstInBool = false;
+                this.cliclPermit();
+                //滑动
+                this.moveScreen();
+            }
+
             List<WebElement> list = driver.findElementsByClassName("android.widget.TextView");
+            logger.info("查找TextView list " + list == null?"无":list.size()+"");
+            if (list == null || list.size() == 0) {
+                this.moveScreen();
+            }
             for (WebElement webElement : list) {
                 String text = null;
                 try {
@@ -124,6 +159,8 @@ public class ZykService {
                     }
                     if ("跳过".equals(text) || text.equals("我的")) {
                         if (text.equals("跳过")) {
+                            firstInBool = true;
+
                             logger.info(processEdsc+"进入登录====");
                             step = 1;
                         } else if (text.equals("我的")) {
@@ -140,16 +177,10 @@ public class ZykService {
                     }
 
                     if (text != null && text.contains("权限")) {
-                        for (int b=0;b<=2;b++) {
-                            Map tap3 = new HashMap();
-                            tap3.put("tapCount", new Double(2));
-                            tap3.put("touchCount", new Double(1));
-                            tap3.put("duration", new Double(0.5));
-                            tap3.put("x", new Double(602));
-                            tap3.put("y", new Double(1219));
-                            driver.executeScript("mobile: tap", tap3);
-                            Thread.sleep(1000);
-                        }
+                        this.cliclPermit();
+                        Thread.sleep(3000);
+                        //滑动
+                        this.moveScreen();
                     }
 
                     if (text != null && text.contains("照片、媒体内")) {
@@ -158,10 +189,8 @@ public class ZykService {
                 } catch (Exception e) {
                     logger.info(processEdsc+"在点击我的或者跳过的步骤 = " + e.toString());
                     //滑动
-                    for (int a = 0;a<=2;a++) {
-                        Swipe.SwipeLeft(driver);
-                        Thread.sleep(1000);
-                    }
+                    this.moveScreen();
+
                     logger.info("点击我的体验");
                     Map tap3 = new HashMap();
                     tap3.put("tapCount", new Double(2));
